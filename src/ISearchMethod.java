@@ -7,4 +7,5 @@ public interface ISearchMethod {
     public void printMethodName();
     public Queue searchMethod(Graph g);
     public void printStep();
+    public void printPathToFinish(Queue<Node> q);
 }

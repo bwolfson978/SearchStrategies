@@ -54,7 +54,7 @@ public class SearchStrategies {
         method.printMethodName();
 
         //call the search method
-        //method.searchMethod(g);
+        method.searchMethod(g);
 
        //return new Queue();
     }

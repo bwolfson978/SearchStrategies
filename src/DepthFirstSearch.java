@@ -4,6 +4,7 @@ import java.util.*;
  */
 public class DepthFirstSearch implements ISearchMethod{
     
+    @Override
     public void printMethodName() {
         System.out.println("Depth 1st search");
     }
@@ -21,7 +22,7 @@ public class DepthFirstSearch implements ISearchMethod{
         stack.push(g.src);
 
         //set start node to visited
-        g.src.visited=true;
+        //g.src.visited=true;
 
         //printStep(stack.peek());
 
@@ -51,5 +52,14 @@ public class DepthFirstSearch implements ISearchMethod{
     @Override
     public void printStep() {
         System.out.println("X");
+    }
+
+    //print path to finish 
+    @Override
+    public void printPathToFinish(Queue<Node> q) {
+        System.out.println("<");
+        for(Node n : q)
+            System.out.println(n.val);
+        System.out.println(">");
     }
 }

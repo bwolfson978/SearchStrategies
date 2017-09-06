@@ -28,7 +28,6 @@ public class BreadthFirstSearch implements ISearchMethod{
         //print first node expanded & it's queue
         System.out.println("   " + start.val + "         "+"[<" + start.val +">]");
 
-
         //add check to see if src and goal are the same node -> if so return 'goal reached'
 
         //hold the path to the goal node
@@ -52,7 +51,8 @@ public class BreadthFirstSearch implements ISearchMethod{
         //print out current step
         printStep(queueOfQueues);
 
-         while(queue.peek() != null) {
+
+        while(queue.peek() != null) {
             Node nextNode = queue.poll(); //dequeue the head and hold it here (poll = dequeue)
             
             //print next nodes information
@@ -60,14 +60,37 @@ public class BreadthFirstSearch implements ISearchMethod{
 
             Iterator<Node> i = g.adjList.get(nextNode).listIterator(); //get nextNode's neighbors
             
+
+
             while (i.hasNext()) {
                 Node n = i.next();
+
+                //Always add unless letter exists in the front queue
+
+                //for each of it's neighbors, append it to the front of the first list of lists, and then re-add it to the end
+                LinkedList<Node> frontList = new LinkedList<Node>(queueOfQueues.peekFirst());
+                
+                if(!frontList.contains(n)){
+                    frontList.addFirst(n); //add new neighbor to front of this list
+                    //re-add this to end of queue of queues
+                    queueOfQueues.add(frontList);
+                }
+
                 if (!visitedList.contains(n)) {
+
+                    
+
+
                     visitedList.add(n); //now the node is visited
                     pathToFinish.add(n);
                     queue.add(n);
                 }
             }
+            //now we are done with the front list
+            queueOfQueues.removeFirst();
+
+
+            printStep(queueOfQueues);
          }
 
         //not real path to finish

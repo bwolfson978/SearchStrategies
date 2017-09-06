@@ -1,7 +1,8 @@
+import java.*;
 /**
  * Created by bwolfson on 9/4/2017.
  */
-public class Node {
+public class Node implements Comparable {
     char val;
     float d;
     float h;
@@ -40,5 +41,18 @@ public class Node {
         int result = 17;
         result = 31 * result + val;
         return result;
+    }
+
+    @Override
+    public int compareTo(Object o){
+        Node compare = (Node) o;
+        if (this.val == compare.val) 
+            return 0;
+        else if (this.val < compare.val) 
+            return -1;
+        else 
+            return 1;
+
+        
     }
 }

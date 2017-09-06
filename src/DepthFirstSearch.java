@@ -19,7 +19,7 @@ public class DepthFirstSearch implements ISearchMethod{
         Stack stack = new Stack();
 
         //get start node
-        stack.push(g.src);
+        //stack.push(g.src);
 
         //set start node to visited
         //g.src.visited=true;
@@ -50,7 +50,7 @@ public class DepthFirstSearch implements ISearchMethod{
 
     //print each step 
     @Override
-    public void printStep() {
+    public void printStep(LinkedList<LinkedList<Node>> qoq) {
         System.out.println("X");
     }
 

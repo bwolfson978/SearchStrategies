@@ -37,11 +37,20 @@ public class BreadthFirstSearch implements ISearchMethod{
 
         //put the adjacent nodes into out queue
         Queue<Node> queue = new LinkedList<Node>(g.adjList.get(start));
-        
-        //Print the next queues
-        /*for (Node n : queue) {
-            System.out.println("insert: " + n.val);
-        }*/
+
+        //Need a queue of queues 
+        LinkedList<LinkedList<Node>> queueOfQueues = new LinkedList<LinkedList<Node>>();
+
+        //Maintain 'threading' of queues -> need new queue for every neighbor of S
+        for (Node n : queue) {
+            LinkedList<Node> newQueue = new LinkedList<Node>();
+            newQueue.add(n);
+            newQueue.add(start); 
+            queueOfQueues.add(newQueue);
+        }
+
+        //print out current step
+        printStep(queueOfQueues);
 
          while(queue.peek() != null) {
             Node nextNode = queue.poll(); //dequeue the head and hold it here (poll = dequeue)
@@ -72,8 +81,23 @@ public class BreadthFirstSearch implements ISearchMethod{
 
     //print each step 
     @Override
-    public void printStep() {
-        System.out.println("X");
+    public void printStep(LinkedList<LinkedList<Node>> qoq ) {
+
+        //print out expanded node (first value in first list)
+        System.out.print("   " + qoq.peekFirst().peekFirst().val + "         ");
+
+        //Print out queues
+        System.out.print("[");
+        for( LinkedList<Node> q : qoq){
+
+            System.out.print("<");
+            for(Node n : (LinkedList<Node>)q){
+                System.out.print(n.val);
+            }
+            System.out.print(">");
+
+        }
+        System.out.println("]");
     }
 
     //print path to finish 
@@ -84,5 +108,7 @@ public class BreadthFirstSearch implements ISearchMethod{
             System.out.print(n.val + " ");
         System.out.println(">");
     }
+
+
 
 }

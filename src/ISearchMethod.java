@@ -6,6 +6,6 @@ import java.util.*;
 public interface ISearchMethod {
     public void printMethodName();
     public Queue searchMethod(Graph g);
-    public void printStep();
+    public void printStep(LinkedList<LinkedList<Node>> qoq);
     public void printPathToFinish(Queue<Node> q);
 }

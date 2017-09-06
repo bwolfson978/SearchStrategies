@@ -7,7 +7,7 @@ import java.util.LinkedList;
 public class Graph {
     Node src;
     Node goal;
-    HashMap<Node, LinkedList<Node>> adjList;
+    HashMap<Node, LinkedList<Node>> adjList; //should use a priority queue, not list - less conversions - organize by alphabetical order
 
     public Graph(){
         this.adjList = new HashMap<>();

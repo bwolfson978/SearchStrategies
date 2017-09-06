@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 
 /**
  * Created by bwolfson on 9/4/2017.
@@ -48,6 +49,16 @@ public class SearchStrategies {
         br.close();
     }
 
+    public void General_Search(Graph g, ISearchMethod method){
+        //print name of the method
+        method.printMethodName();
+
+        //call the search method
+        //method.searchMethod(g);
+
+       //return new Queue();
+    }
+
     public static void main(String[] args){
         System.out.println("hello");
         SearchStrategies s = new SearchStrategies();
@@ -59,6 +70,26 @@ public class SearchStrategies {
         }
         catch(IOException exc){
             System.out.println("exception caught:" + exc.getMessage());
+        }
+
+        //Begin searches...
+
+        //Depth 1st search
+        try {
+            DepthFirstSearch dfs = new DepthFirstSearch();
+            s.General_Search(s.graph, dfs);
+        }
+        catch(Exception exc){
+            System.out.println("exception caught in dfs:" + exc.getMessage());
+        }
+
+        //Breadth 1st search
+        try {
+            BreadthFirstSearch bfs = new BreadthFirstSearch();
+            s.General_Search(s.graph, bfs);
+        }
+        catch(Exception exc){
+            System.out.println("exception caught in bfs:" + exc.getMessage());
         }
     }
 }

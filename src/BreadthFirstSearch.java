@@ -25,11 +25,6 @@ public class BreadthFirstSearch implements ISearchMethod{
         Node start = g.src;
         visitedList.add(start);
 
-        //print first node expanded & it's queue
-        System.out.println("   " + start.val + "         "+"[<" + start.val +">]");
-
-        //add check to see if src and goal are the same node -> if so return 'goal reached'
-
         //hold the path to the goal node
         LinkedList<Node> pathToFinish = new LinkedList<Node>(); //may have to switch the queue
         pathToFinish.add(start);
@@ -37,8 +32,15 @@ public class BreadthFirstSearch implements ISearchMethod{
         //put the adjacent nodes into out queue
         Queue<Node> queue = new LinkedList<Node>(g.adjList.get(start));
 
-        //Need a queue of queues 
-        LinkedList<LinkedList<Node>> queueOfQueues = new LinkedList<LinkedList<Node>>();
+        //Throw S in here and expand it (must be in a linked list to work)
+        LinkedList<Node> initQueue = new LinkedList<Node>(Arrays.asList(start));
+
+        //Need a queue of queues (The Queue of all Queues :: used for printing purposes only)
+        LinkedList<LinkedList<Node>> queueOfQueues = new LinkedList<LinkedList<Node>>(Arrays.asList(initQueue));
+
+        //print first step and then remove it
+        printStep(queueOfQueues);
+        queueOfQueues.removeFirst();
 
         //Maintain 'threading' of queues -> need new queue for every neighbor of S
         for (Node n : queue) {
@@ -51,34 +53,24 @@ public class BreadthFirstSearch implements ISearchMethod{
         //print out current step
         printStep(queueOfQueues);
 
-        outerloop:
-        while(queue.peek() != null) {
+        
+        outerloop: while(queue.peek() != null) {
             Node nextNode = queue.poll(); //dequeue the head and hold it here (poll = dequeue)
-            
-            //print next nodes information
-            //System.out.println(nextNode.val + "");
-
+         
             Iterator<Node> i = g.adjList.get(nextNode).listIterator(); //get nextNode's neighbors
-            
-
             
             while (i.hasNext()) {
                 Node n = i.next();
 
                 //********* Print related code ********
-                //Always add unless letter exists in the front queue
                 //for each of it's neighbors, append it to the front of the first list of lists, and then re-add it to the end
                 LinkedList<Node> frontList = new LinkedList<Node>(queueOfQueues.peekFirst());
                 
-                //System.out.println(frontList.peekFirst().val + " G ::: " + frontList.peekLast().val + " S");
-
                 //check to see if the solution has reached the first of list, if so, were good.
-                if(frontList.peekFirst().val == 'G' && frontList.peekLast().val == 'S'){
-                    //goal reached!
-                    break outerloop;
-                }
-
-
+                if(frontList.peekFirst().val == 'G' && frontList.peekLast().val == 'S')
+                    break outerloop; //goal reached!
+                
+                //Always add unless letter exists in the front queue
                 if(!frontList.contains(n)){
                     frontList.addFirst(n); //add new neighbor to front of this list
                     //re-add this to end of queue of queues
@@ -88,28 +80,25 @@ public class BreadthFirstSearch implements ISearchMethod{
                 }
                 //*************************************
 
+                //Should be able to remove visitedList...
                 if (!visitedList.contains(n)) {
                     visitedList.add(n); //now the node is visited
-                    //pathToFinish.add(n);
-                    //queue.add(n);
+                    //pathToFinish.add(n); <-- This stuff is how BFS is supposed to work
+                    //queue.add(n);        <--
                 }
             }
             //***** Print related code *******
             //now we are done with the front list
             queueOfQueues.removeFirst();
-
-
-            printStep(queueOfQueues);
+            printStep(queueOfQueues); 
          }
 
         System.out.println("goal reached!");
 
-        //not real path to finish
-        printPathToFinish(queueOfQueues.peekFirst());
-
+        //Final path from start to finish
+        printPathToFinish(queueOfQueues.peekFirst()); //Not required, but i like it
 
         //Not finished implementing
-     
         return pathToFinish;
     }
 
@@ -117,7 +106,7 @@ public class BreadthFirstSearch implements ISearchMethod{
     @Override
     public void printStep(LinkedList<LinkedList<Node>> qoq ) {
 
-        //print out expanded node (first value in first list)
+        //print out expanded node (this is the first value in first list)
         System.out.print("   " + qoq.peekFirst().peekFirst().val + "         ");
 
         //Print out queues

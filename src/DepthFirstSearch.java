@@ -37,7 +37,9 @@ public class DepthFirstSearch implements ISearchMethod{
         LinkedList<Node> initQueue = new LinkedList<Node>(Arrays.asList(start));
 
         //Need a queue of queues (The Queue of all Queues :: used for printing purposes only)
-         
+        LinkedList<LinkedList<Node>> queueOfQueues = new LinkedList<LinkedList<Node>>(Arrays.asList(initQueue));
+
+
         //print first step and then remove it
         printStep(queueOfQueues);
         queueOfQueues.removeFirst();

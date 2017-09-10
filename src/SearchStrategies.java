@@ -93,6 +93,24 @@ public class SearchStrategies {
             System.out.println("exception caught in bfs:" + exc.getMessage());
         }
 
+        //Depth-Limited Search
+        try {
+            DepthLimitedSearch dls = new DepthLimitedSearch(2);
+            s.General_Search(s.graph, dls);
+        }
+        catch(Exception e){
+            System.out.println("exc caught in depth-limited: " + e.getMessage());
+        }
+
+        // iterative deepening search
+        try {
+            IterativeDeepeningSearch ids = new IterativeDeepeningSearch();
+            s.General_Search(s.graph, ids);
+        }
+        catch(Exception e){
+            System.out.println("exc caught in iterative deepening search: " + e.getMessage());
+        }
+
 
 
         //Uniform Search

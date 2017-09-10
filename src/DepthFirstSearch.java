@@ -61,13 +61,16 @@ public class DepthFirstSearch implements ISearchMethod{
          
             Iterator<Node> i = g.adjList.get(nextNode).listIterator(); //get nextNode's neighbors
             
+            int counter = 0;
+
+            LinkedList<Node> tempFront = new LinkedList<Node>(queueOfQueues.poll());
 
             while (i.hasNext()) {
                 Node n = i.next();
 
                 //********* Print related code ********
                 //for each of it's neighbors, append it to the front of the first list of lists, and then re-add it to the end
-                LinkedList<Node> frontList = new LinkedList<Node>(queueOfQueues.peekFirst());
+                LinkedList<Node> frontList =  new LinkedList<Node>(tempFront);
                 
                 //check to see if the solution has reached the first of list, if so, were good.
                 if(frontList.peekFirst().val == 'G' && frontList.peekLast().val == 'S')
@@ -76,43 +79,47 @@ public class DepthFirstSearch implements ISearchMethod{
                 //Always add unless letter exists in the front queue
                 if(!frontList.contains(n)){
                     frontList.addFirst(n); //add new neighbor to front of this list
-                    System.out.println("FrontList: "+frontList);
+                    //System.out.println("FrontList: "+frontList);
                     //re-add this to end of queue of queues
-//queueOfQueues.add(frontList);
-                    //decide where to add this to the queue
-                    //Iterator<Node> x = queueOfQueues.peekFirst().listIterator();
-                    int counter = 0;
-                     //while (x.hasNext()) {
-                        //System.out.println("b");
-                    //System.out.println("queueOfQueues.length: "+queueOfQueues.size());
-                    //System.out.println("queueOfQueues.firstlength: "+queueOfQueues.peek().size());
 
-                    for (LinkedList<Node> l : queueOfQueues){
-                        /*System.out.println("X");
-                        System.out.println("l.length: "+l.size());
+                    //decide where to add this to the queue
+                    
+                    
+                    queueOfQueues.add(counter, frontList); //null line?
+                            
+                    counter++;
+
+                   /* for (LinkedList<Node> l : queueOfQueues){
+                        System.out.println("X");
+                        /*System.out.println("l.length: "+l.size());
                          System.out.println("l: "+l.peek().val);
-                         System.out.println("frontList: "+frontList.peek().val );*/
+                         System.out.println("frontList: "+frontList.peek().val );
                         
                         if(frontList.peek().val >= l.peek().val){
+                            System.out.println("Queue of queues: "+queueOfQueues);
                             System.out.println("Insert: "+frontList + " at index: "+ counter);
+                            
                             queueOfQueues.add(counter, frontList); //null line?
+                             System.out.println("Properly inserted");
+                             System.out.println("Queue of queues: "+queueOfQueues);
+                             break;
                         }
                         counter++;
-                        //x.next();*/
-                     }
+                     }*/
                     
-
+                    // System.out.println("path to finish insert: "+n);
                     pathToFinish.add(n);
+                    //System.out.println("queue . add ");
                     queue.add(n);
                 }
                 //*************************************
 
                 //Should be able to remove visitedList...
-                if (!visitedList.contains(n)) {
-                    visitedList.add(n); //now the node is visited
+                //if (!visitedList.contains(n)) {
+                  //  visitedList.add(n); //now the node is visited
                     //pathToFinish.add(n); <-- This stuff is how BFS is supposed to work
                     //queue.add(n);        <--
-                }
+                //}
             }
             //***** Print related code *******
             //now we are done with the front list

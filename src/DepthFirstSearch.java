@@ -21,7 +21,6 @@ public class DepthFirstSearch implements ISearchMethod{
 
 
     //search method, traverse the tree using this classes way of searching
-
     @Override
     public Queue<Node> searchMethod(Graph g) {
         Node start = g.src;
@@ -55,75 +54,53 @@ public class DepthFirstSearch implements ISearchMethod{
         //print out current step
         printStep(queueOfQueues);
 
-        
+        //------------------- Everything after the first step -------------------
         outerloop: while(queue.peek() != null) {
             Node nextNode = queue.poll(); //dequeue the head and hold it here (poll = dequeue)
          
             Iterator<Node> i = g.adjList.get(nextNode).iterator(); //get nextNode's neighbors
             
+            int counter = 0;
+
+            //store the front of the queue. New nodes will add to this previous head.
+            LinkedList<Node> tempFront = new LinkedList<Node>(queueOfQueues.poll());
+
+            //check to see if the solution has reached the first of list, if so, were good.
+            if(tempFront.peekFirst().val == 'G' && tempFront.peekLast().val == 'S'){
+                pathToFinish = tempFront; //update the path to finish
+                break outerloop; //goal reached!
+            }
 
             while (i.hasNext()) {
+                
                 Node n = i.next();
 
-                //********* Print related code ********
-                //for each of it's neighbors, append it to the front of the first list of lists, and then re-add it to the end
-                LinkedList<Node> frontList = new LinkedList<Node>(queueOfQueues.peekFirst());
+                //for each of it's neighbors, make a new list - starting from the previous queue head
+                LinkedList<Node> frontList =  new LinkedList<Node>(tempFront);
                 
-                //check to see if the solution has reached the first of list, if so, were good.
-                if(frontList.peekFirst().val == 'G' && frontList.peekLast().val == 'S')
-                    break outerloop; //goal reached!
-                
-                //Always add unless letter exists in the front queue
-                if(!frontList.contains(n)){
+                //Always add unless letter exists in the front queue - no redundancies/cycles
+                if(!tempFront.contains(n)){
                     frontList.addFirst(n); //add new neighbor to front of this list
-                    System.out.println("FrontList: "+frontList);
-                    //re-add this to end of queue of queues
-//queueOfQueues.add(frontList);
-                    //decide where to add this to the queue
-                    //Iterator<Node> x = queueOfQueues.peekFirst().listIterator();
-                    int counter = 0;
-                     //while (x.hasNext()) {
-                        //System.out.println("b");
-                    //System.out.println("queueOfQueues.length: "+queueOfQueues.size());
-                    //System.out.println("queueOfQueues.firstlength: "+queueOfQueues.peek().size());
 
-                    for (LinkedList<Node> l : queueOfQueues){
-                        /*System.out.println("X");
-                        System.out.println("l.length: "+l.size());
-                         System.out.println("l: "+l.peek().val);
-                         System.out.println("frontList: "+frontList.peek().val );*/
-                        
-                        if(frontList.peek().val >= l.peek().val){
-                            System.out.println("Insert: "+frontList + " at index: "+ counter);
-                            queueOfQueues.add(counter, frontList); //null line?
-                        }
-                        counter++;
-                        //x.next();*/
-                     }
+                    //add this to the queue where the current count is at
+                    queueOfQueues.add(counter, frontList); 
                     
-
                     pathToFinish.add(n);
-                    queue.add(n);
-                }
-                //*************************************
+                    queue.add(counter, n);//also important to update the search queue in correct order
 
-                //Should be able to remove visitedList...
-                if (!visitedList.contains(n)) {
-                    visitedList.add(n); //now the node is visited
-                    //pathToFinish.add(n); <-- This stuff is how BFS is supposed to work
-                    //queue.add(n);        <--
+                    counter++;
                 }
+            
             }
             //***** Print related code *******
             //now we are done with the front list
-            queueOfQueues.removeFirst();
-            printStep(queueOfQueues); 
+            printStep(queueOfQueues);             
          }
 
         System.out.println("goal reached!");
 
         //Final path from start to finish
-        printPathToFinish(queueOfQueues.peekFirst()); //Not required, but i like it
+        printPathToFinish(pathToFinish); //Not required, but i like it
 
         //Not finished implementing
         return pathToFinish;
@@ -150,6 +127,8 @@ public class DepthFirstSearch implements ISearchMethod{
         System.out.println("]");
     }
 
+    public void printDistanceStep(LinkedList<Path> qoq){}
+
     //print path to finish 
     @Override
     public void printPathToFinish(Queue<Node> q) {
@@ -157,5 +136,7 @@ public class DepthFirstSearch implements ISearchMethod{
         for(Node n : q)
             System.out.print(n.val + " ");
         System.out.println(">");
+        System.out.println();
     }
+    
 }

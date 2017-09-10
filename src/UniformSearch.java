@@ -1,18 +1,20 @@
 import java.util.*;
 import java.*;
 /**
- * Created by andrewrot on 9/5/2017.
+ * Created by andrewrot on 9/10/2017.
  */
-public class BreadthFirstSearch implements ISearchMethod{
-    
-    LinkedList<Node> visitedList; //anything in this list, the search has already looked at
 
-    public BreadthFirstSearch(){
-        visitedList = new LinkedList<Node>();
+//Queue is sorted by least cost so far first - need extra value to hold the distance traveled
+public class UniformSearch implements ISearchMethod{
+    
+
+
+    public UniformSearch(){
+
     }
 
     public void printMethodName() {
-        System.out.println("Breadth 1st search");
+        System.out.println("Uniform Search");
         System.out.println();
         System.out.println("Expanded     Queue");
     }
@@ -23,35 +25,40 @@ public class BreadthFirstSearch implements ISearchMethod{
     public Queue<Node> searchMethod(Graph g) {
 
         Node start = g.src;
-        visitedList.add(start);
 
         //hold the path to the goal node
         LinkedList<Node> pathToFinish = new LinkedList<Node>(); //may have to switch the queue
-        pathToFinish.add(start);
+        //pathToFinish.add(start);
+
+
 
         //put the adjacent nodes into out queue
         Queue<Node> queue = new LinkedList<Node>(g.adjList.get(start));
 
         //Throw S in here and expand it (must be in a linked list to work)
         LinkedList<Node> initQueue = new LinkedList<Node>(Arrays.asList(start));
+        Path firstPath = new Path(initQueue); //need to maintain in path
 
         //Need a queue of queues (The Queue of all Queues :: used for printing purposes only)
-        LinkedList<LinkedList<Node>> queueOfQueues = new LinkedList<LinkedList<Node>>(Arrays.asList(initQueue));
+        LinkedList<Path> queueOfQueues = new LinkedList<Path>();
+        queueOfQueues.add(firstPath);
 
         //print first step and then remove it
-        printStep(queueOfQueues);
+        printDistanceStep(queueOfQueues);
         queueOfQueues.removeFirst();
 
         //Maintain 'threading' of queues -> need new queue for every neighbor of S
         for (Node n : queue) {
             LinkedList<Node> newQueue = new LinkedList<Node>();
+
             newQueue.add(n);
             newQueue.add(start); 
-            queueOfQueues.add(newQueue);
+            Path nextPath = new Path(newQueue);
+            queueOfQueues.add(nextPath);
         }
 
         //print out current step
-        printStep(queueOfQueues);
+        printDistanceStep(queueOfQueues);
 
         
         outerloop: while(queue.peek() != null) {
@@ -64,15 +71,15 @@ public class BreadthFirstSearch implements ISearchMethod{
 
                 //********* Print related code ********
                 //for each of it's neighbors, append it to the front of the first list of lists, and then re-add it to the end
-                LinkedList<Node> frontList = new LinkedList<Node>(queueOfQueues.peekFirst());
+                Path frontList = new Path(queueOfQueues.peekFirst().pathSoFar);
                 
                 //check to see if the solution has reached the first of list, if so, were good.
-                if(frontList.peekFirst().val == 'G' && frontList.peekLast().val == 'S')
+                if(frontList.pathSoFar.peekFirst().val == 'G' && frontList.pathSoFar.peekLast().val == 'S')
                     break outerloop; //goal reached!
                 
                 //Always add unless letter exists in the front queue
-                if(!frontList.contains(n)){
-                    frontList.addFirst(n); //add new neighbor to front of this list
+                if(!frontList.pathSoFar.contains(n)){
+                    frontList.pathSoFar.addFirst(n); //add new neighbor to front of this list
                     //re-add this to end of queue of queues
                     queueOfQueues.add(frontList);
                     pathToFinish.add(n);
@@ -80,23 +87,17 @@ public class BreadthFirstSearch implements ISearchMethod{
                 }
                 //*************************************
 
-                //Should be able to remove visitedList...
-                if (!visitedList.contains(n)) {
-                    visitedList.add(n); //now the node is visited
-                    //pathToFinish.add(n); <-- This stuff is how BFS is supposed to work
-                    //queue.add(n);        <--
-                }
             }
             //***** Print related code *******
             //now we are done with the front list
             queueOfQueues.removeFirst();
-            printStep(queueOfQueues); 
+            printDistanceStep(queueOfQueues); 
          }
 
         System.out.println("goal reached!");
 
         //Final path from start to finish
-        printPathToFinish(queueOfQueues.peekFirst()); //Not required, but i like it
+        printPathToFinish(queueOfQueues.peekFirst().pathSoFar); //Not required, but i like it
 
         //Not finished implementing
         return pathToFinish;
@@ -105,7 +106,6 @@ public class BreadthFirstSearch implements ISearchMethod{
     //print each step 
     @Override
     public void printStep(LinkedList<LinkedList<Node>> qoq ) {
-
         //print out expanded node (this is the first value in first list)
         System.out.print("   " + qoq.peekFirst().peekFirst().val + "         ");
 
@@ -123,7 +123,28 @@ public class BreadthFirstSearch implements ISearchMethod{
         System.out.println("]");
     }
 
-    public void printDistanceStep(LinkedList<Path> qoq){}
+    //This print adds distance to the print step - also requires a list of paths (which hold distance traveled)
+    @Override
+    public void printDistanceStep(LinkedList<Path> qoq){
+        //print out expanded node (this is the first value in first list)
+        System.out.print("   " + qoq.peekFirst().getPathSoFar().peekFirst().val + "         ");
+
+        //Print out queues
+        System.out.print("[");
+        for( Path p : qoq){
+
+            //get this paths distance and print it first
+            System.out.print(p.getTotalDistance());
+
+            System.out.print("<");
+            for(Node n : (LinkedList<Node>)p.getPathSoFar()){
+                System.out.print(n.val);
+            }
+            System.out.print("> ");
+
+        }
+        System.out.println("]");
+    }
 
     //print path to finish 
     @Override
@@ -134,8 +155,6 @@ public class BreadthFirstSearch implements ISearchMethod{
         System.out.println(">");
         System.out.println();
     }
-
-
 
 
 

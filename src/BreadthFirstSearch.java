@@ -57,7 +57,7 @@ public class BreadthFirstSearch implements ISearchMethod{
         outerloop: while(queue.peek() != null) {
             Node nextNode = queue.poll(); //dequeue the head and hold it here (poll = dequeue)
          
-            Iterator<Node> i = g.adjList.get(nextNode).listIterator(); //get nextNode's neighbors
+            Iterator<Node> i = g.adjList.get(nextNode).iterator(); //get nextNode's neighbors
             
             while (i.hasNext()) {
                 Node n = i.next();

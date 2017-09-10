@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 /**
  * Created by bwolfson on 9/4/2017.
@@ -7,7 +8,7 @@ import java.util.LinkedList;
 public class Graph {
     Node src;
     Node goal;
-    HashMap<Node, LinkedList<Node>> adjList; //should use a priority queue, not list - less conversions - organize by alphabetical order
+    HashMap<Node, PriorityQueue<Node>> adjList; //should use a priority queue, not list - less conversions - organize by alphabetical order
 
     public Graph(){
         this.adjList = new HashMap<>();
@@ -16,7 +17,7 @@ public class Graph {
     public void addEdge(char fromVal, char toVal, float distance){
         Node from = new Node(fromVal);
         Node to = new Node(toVal, distance);
-        LinkedList<Node> neighbors = adjList.containsKey(from) ? adjList.get(from) : new LinkedList<>();
+        PriorityQueue<Node> neighbors = adjList.containsKey(from) ? adjList.get(from) : new PriorityQueue<>();
         neighbors.add(to);
         adjList.put(from, neighbors);
     }
@@ -30,7 +31,7 @@ public class Graph {
                     src.h = h;
                 }
             }
-            LinkedList<Node> neighbors = adjList.get(key);
+            PriorityQueue<Node> neighbors = adjList.get(key);
             for(Node n : neighbors){
                 if(n.val == val){
                     n.h = h;

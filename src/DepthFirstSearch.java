@@ -127,6 +127,8 @@ public class DepthFirstSearch implements ISearchMethod{
         System.out.println("]");
     }
 
+    public void printDistanceStep(LinkedList<Path> qoq){}
+
     //print path to finish 
     @Override
     public void printPathToFinish(Queue<Node> q) {

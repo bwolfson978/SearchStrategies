@@ -4,8 +4,8 @@ import java.*;
  */
 public class Node implements Comparable {
     char val;
-    float d;
-    float h;
+    float d; //distance from where it came from 
+    float h; //distance to finish
 
     public Node(char val){
         this.val = val;

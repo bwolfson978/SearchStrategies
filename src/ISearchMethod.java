@@ -7,5 +7,8 @@ public interface ISearchMethod {
     public void printMethodName();
     public Queue searchMethod(Graph g);
     public void printStep(LinkedList<LinkedList<Node>> qoq);
+
+    public void printDistanceStep(LinkedList<Path> qoq); //this is for when we need to keep track of distance traveled
+
     public void printPathToFinish(Queue<Node> q);
 }

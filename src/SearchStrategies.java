@@ -56,6 +56,7 @@ public class SearchStrategies {
         //call the search method
         method.searchMethod(g);
 
+
        //return new Queue();
     }
 
@@ -91,5 +92,19 @@ public class SearchStrategies {
         catch(Exception exc){
             System.out.println("exception caught in bfs:" + exc.getMessage());
         }
+
+
+
+        //Uniform Search
+        try {
+            UniformSearch us = new UniformSearch();
+            s.General_Search(s.graph, us);
+        }
+        catch(Exception exc){
+            System.out.println("exception caught in us:" + exc.getMessage());
+        }
+
+
+
     }
 }

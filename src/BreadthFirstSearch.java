@@ -130,6 +130,7 @@ public class BreadthFirstSearch implements ISearchMethod{
         for(Node n : q)
             System.out.print(n.val + " ");
         System.out.println(">");
+        System.out.println();
     }
 
 

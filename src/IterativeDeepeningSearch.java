@@ -99,4 +99,25 @@ public class IterativeDeepeningSearch implements ISearchMethod {
             System.out.print(n.val + " ");
         System.out.println(">");
     }
+
+    public void printDistanceStep(LinkedList<Path> qoq){
+        //print out expanded node (this is the first value in first list)
+        System.out.print("   " + qoq.peekFirst().getPathSoFar().peekFirst().val + "         ");
+
+        //Print out queues
+        System.out.print("[");
+        for( Path p : qoq){
+
+            //get this paths distance and print it first
+            System.out.print(p.getTotalDistance());
+
+            System.out.print("<");
+            for(Node n : (LinkedList<Node>)p.getPathSoFar()){
+                System.out.print(n.val);
+            }
+            System.out.print("> ");
+
+        }
+        System.out.println("]");
+    }
 }

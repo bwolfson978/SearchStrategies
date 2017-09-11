@@ -28,12 +28,8 @@ public class UniformSearch implements ISearchMethod{
 
         //hold the path to the goal node
         LinkedList<Node> pathToFinish = new LinkedList<Node>(); //may have to switch the queue
-        //pathToFinish.add(start);
 
-
-
-        //put the adjacent nodes into out queue
-        Queue<Node> queue = new LinkedList<Node>(g.adjList.get(start));
+        LinkedList<Node> queue = new LinkedList<Node>(g.adjList.get(start)); //put the adjacent nodes into out queue
 
         //Throw S in here and expand it (must be in a linked list to work)
         LinkedList<Node> initQueue = new LinkedList<Node>(Arrays.asList(start));
@@ -53,25 +49,45 @@ public class UniformSearch implements ISearchMethod{
 
             newQueue.add(n);
             newQueue.add(start); 
-            Path nextPath = new Path(newQueue);
+
+            float dt = 0;
+            //GRAB DISTANCE FOR THESE TOO MOFOS
+             Iterator<Node> x = g.adjList.get(n).iterator();
+            while (x.hasNext()) {
+               Node neighborNode = x.next();
+               //find the node pointing back to the start to get directed distance
+                if(neighborNode.val == start.val){ 
+                    dt = neighborNode.d;
+                }
+            }
+
+            Path nextPath = new Path(newQueue, dt);
             queueOfQueues.add(nextPath);
         }
 
         //print out current step
         printDistanceStep(queueOfQueues);
 
-        
-        outerloop: while(queue.peek() != null) {
-            Node nextNode = queue.poll(); //dequeue the head and hold it here (poll = dequeue)
-         
+        outerloop: while(queueOfQueues.peekFirst().getPathSoFar().peekFirst() != null) {
+
+            Node nextNode = queueOfQueues.peekFirst().getPathSoFar().peekFirst();//hold head it here 
+            //queue.poll(); //dequeue the head and hold it here (poll = dequeue)
+            
             Iterator<Node> i = g.adjList.get(nextNode).iterator(); //get nextNode's neighbors
             
+            //store the front of the queue. New nodes will add to this previous head.
+            Path tempFront = new Path(queueOfQueues.peekFirst().getPathSoFar(), queueOfQueues.peekFirst().getTotalDistance());
+
+            //burn the first value
+            queueOfQueues.removeFirst();
+
+            float distanceTraveled = tempFront.getTotalDistance();//might end up needing
+
             while (i.hasNext()) {
                 Node n = i.next();
 
-                //********* Print related code ********
-                //for each of it's neighbors, append it to the front of the first list of lists, and then re-add it to the end
-                Path frontList = new Path(queueOfQueues.peekFirst().pathSoFar);
+                //Create new/copied objects from old ones
+                Path frontList = new Path(new LinkedList<Node>(tempFront.getPathSoFar()), tempFront.getTotalDistance());
                 
                 //check to see if the solution has reached the first of list, if so, were good.
                 if(frontList.pathSoFar.peekFirst().val == 'G' && frontList.pathSoFar.peekLast().val == 'S')
@@ -80,27 +96,141 @@ public class UniformSearch implements ISearchMethod{
                 //Always add unless letter exists in the front queue
                 if(!frontList.pathSoFar.contains(n)){
                     frontList.pathSoFar.addFirst(n); //add new neighbor to front of this list
-                    //re-add this to end of queue of queues
-                    queueOfQueues.add(frontList);
-                    pathToFinish.add(n);
-                    queue.add(n);
-                }
-                //*************************************
 
+                    //update this paths distance
+                    //Since we are using a priority queue we have to iterate to find the distance to adjacent node X in the queue 
+                    Iterator<Node> x = g.adjList.get(n).iterator();
+                    while (x.hasNext()) {
+                        Node neighborNode = x.next();
+                        if(nextNode.val == neighborNode.val)
+                            frontList.totalDistance = neighborNode.d + frontList.getTotalDistance();
+                    }
+
+                    //re-add this to end of queue of queues
+                    //queueOfQueues.add(frontList);// ---old unsorted way
+                    queueOfQueues = insertByDistanceTraveled(queueOfQueues, frontList);
+                }
             }
-            //***** Print related code *******
             //now we are done with the front list
-            queueOfQueues.removeFirst();
+            //queueOfQueues.removeFirst();
             printDistanceStep(queueOfQueues); 
          }
 
         System.out.println("goal reached!");
 
         //Final path from start to finish
-        printPathToFinish(queueOfQueues.peekFirst().pathSoFar); //Not required, but i like it
+        //printPathToFinish(queueOfQueues.peekFirst().pathSoFar); //Not required, but i like it
 
-        //Not finished implementing
         return pathToFinish;
+    }
+
+
+
+    private LinkedList<Path> insertByDistanceTraveled(LinkedList<Path> qofqs, Path toAdd){
+        boolean added = false;
+        if(qofqs.size() == 0){
+            qofqs.add(toAdd);
+        }
+        else {
+            float valToInsert = toAdd.getTotalDistance();
+            Iterator<Path> i = qofqs.listIterator();
+            int idx = 0;
+            while (i.hasNext()) {
+
+                Path currPath = i.next();
+               
+                if (currPath.getTotalDistance() > valToInsert) {
+                    if (idx == 0) {
+                        qofqs.addFirst(toAdd);
+                        added = true;
+                        break;
+                    } else {
+                        qofqs.add(idx, toAdd);
+                        added = true;
+                        break;
+                    }
+                } else if (currPath.getTotalDistance() == valToInsert) {
+                    char currListVal = currPath.getPathSoFar().peekFirst().val;
+
+                    char toAddVal = toAdd.getPathSoFar().peekFirst().val;
+                    if (currListVal != toAddVal) {
+                        if (currListVal > toAddVal) {
+                            if (idx == 0) {
+                                qofqs.addFirst(toAdd);
+                                added = true;
+                                break;
+                            }
+                            else {
+                                qofqs.add(idx, toAdd);
+                                added = true;
+                                break;
+                            }
+                        } else {
+                            //qofqs.add(idx + 1, toAdd);
+                            //added = true;
+                            //break;
+                        }
+                    } else {
+
+                        int currListLength = currPath.getPathSoFar().size();
+                        int toAddLength = toAdd.getPathSoFar().size();
+                        if (currListLength != toAddLength) {
+                            if (toAddLength < currListLength) {
+                                if (idx == 0) {
+                                    qofqs.addFirst(toAdd);
+                                    added = true;
+                                    break;
+                                }
+                                else {
+                                    qofqs.add(idx, toAdd);
+                                    added = true;
+                                    break;
+                                }
+                            } else {
+                                qofqs.add(idx + 1, toAdd);
+                                added = true;
+                                break;
+                            }
+                        } else {
+
+                            // two paths end at same node and are the same length
+                            Iterator<Node> currListIter = currPath.getPathSoFar().listIterator();
+                            Iterator<Node> toAddIter = toAdd.getPathSoFar().listIterator();
+                            while (currListIter.hasNext() && toAddIter.hasNext()) {
+                                Node currNode = currListIter.next();
+                                Node toAddNode = toAddIter.next();
+                                if (!(currNode.val == toAddNode.val)) {
+                                    if (toAddNode.val < currNode.val) {
+                                        if (idx == 0) {
+                                            qofqs.addFirst(toAdd);
+                                            added = true;
+                                            break;
+                                        } else {
+                                            qofqs.add(idx, toAdd);
+                                            added = true;
+                                            break;
+                                        }
+                                    } else {
+                                        qofqs.add(idx + 1, toAdd);
+                                        added = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+                idx++;
+            }
+        }
+
+        //got to the end without being added, add to the end
+        if(added == false){
+            qofqs.addLast(toAdd);
+        }
+
+        return qofqs;
     }
 
     //print each step 

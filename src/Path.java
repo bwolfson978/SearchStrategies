@@ -24,6 +24,7 @@ public class Path {
         this.totalDistance = 0;
     }
 
+
     public Path(LinkedList<Node> n, float d){
         this.pathSoFar = n;
         this.totalDistance = d;

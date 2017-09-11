@@ -100,7 +100,7 @@ public class DepthFirstSearch implements ISearchMethod{
         System.out.println("goal reached!");
 
         //Final path from start to finish
-        printPathToFinish(pathToFinish); //Not required, but i like it
+        //printPathToFinish(pathToFinish); //Not required, but i like it
 
         //Not finished implementing
         return pathToFinish;

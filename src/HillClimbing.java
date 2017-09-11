@@ -1,13 +1,13 @@
 import java.util.*;
 
 /**
- * Created by bwolfson on 9/10/2017.
+ * Created by andrewrot on 9/10/2017.
  */
-public class GreedySearch implements ISearchMethod {
+public class HillClimbing implements ISearchMethod {
 
     @Override
     public void printMethodName() {
-        System.out.println("Greedy Search");
+        System.out.println("Hill Climbing (without backtracking)");
         System.out.println();
         System.out.println("Expanded     Queue");
     }
@@ -22,12 +22,10 @@ public class GreedySearch implements ISearchMethod {
 
         LinkedList<LinkedList<Node>> queueOfQueues = new LinkedList<>(Arrays.asList(initQueue));
 
-        //printStep(queueOfQueues);
-        //queueOfQueues.removeFirst();
 
         outerloop:
         while (!queueOfQueues.isEmpty()) {
-            printDistanceStepGreedy(queueOfQueues);
+            printStep(queueOfQueues);
             LinkedList<Node> currList = queueOfQueues.poll();
             Node curr = currList.peek();
             PriorityQueue<Node> frontier = g.adjList.get(curr);
@@ -35,6 +33,10 @@ public class GreedySearch implements ISearchMethod {
                 break outerloop;
             }
             Iterator<Node> i = frontier.iterator();
+
+            //hold the children in here (only sort going into this qofqs)
+            LinkedList<LinkedList<Node>> childrenQueues = new LinkedList<LinkedList<Node>>();
+
             while (i.hasNext()) {
                 Node n = i.next();
                 if (!currList.contains(n)) {
@@ -44,9 +46,19 @@ public class GreedySearch implements ISearchMethod {
                         toAdd.add(m);
                     }
                     toAdd.addFirst(n);
-                    queueOfQueues = insertByHeuristic(queueOfQueues, toAdd);
+
+                    childrenQueues = insertByHeuristic(childrenQueues, toAdd);
                 }
             }
+
+
+            //Children are sorted in order - however, they need to be added to front in reverse order
+            Iterator childrenIterator = childrenQueues.descendingIterator();
+            while (childrenIterator.hasNext()) {
+                queueOfQueues.addFirst((LinkedList<Node>)childrenIterator.next());
+            }
+
+            
         }
 
         return pathToFinish;
@@ -178,27 +190,6 @@ public class GreedySearch implements ISearchMethod {
 
             System.out.print("<");
             for(Node n : (LinkedList<Node>)p.getPathSoFar()){
-                System.out.print(n.val);
-            }
-            System.out.print("> ");
-
-        }
-        System.out.println("]");
-    }
-
-    public void printDistanceStepGreedy(LinkedList<LinkedList<Node>> qoq){
-        //print out expanded node (this is the first value in first list)
-        System.out.print("   " + qoq.peekFirst().peekFirst().val + "         ");
-
-        //Print out queues
-        System.out.print("[");
-        for( LinkedList<Node> p : qoq){
-
-            //get this paths distance and print it first
-            System.out.print(p.peekFirst().h);
-
-            System.out.print("<");
-            for(Node n : (LinkedList<Node>)p){
                 System.out.print(n.val);
             }
             System.out.print("> ");

@@ -16,7 +16,7 @@ public class Graph {
 
     public void addEdge(char fromVal, char toVal, float distance){
         Node from = new Node(fromVal);
-        Node to = new Node(toVal, distance);
+        Node to = new Node(toVal, distance); //probably should add heuristic here too..
         PriorityQueue<Node> neighbors = adjList.containsKey(from) ? adjList.get(from) : new PriorityQueue<>();
         neighbors.add(to);
         adjList.put(from, neighbors);

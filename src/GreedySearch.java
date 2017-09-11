@@ -25,7 +25,7 @@ public class GreedySearch implements ISearchMethod {
 
         outerloop:
         while (!queueOfQueues.isEmpty()) {
-            printStep(queueOfQueues);
+            printDistanceStepGreedy(queueOfQueues);
             LinkedList<Node> currList = queueOfQueues.poll();
             Node curr = currList.peek();
             PriorityQueue<Node> frontier = g.adjList.get(curr);
@@ -176,6 +176,27 @@ public class GreedySearch implements ISearchMethod {
 
             System.out.print("<");
             for(Node n : (LinkedList<Node>)p.getPathSoFar()){
+                System.out.print(n.val);
+            }
+            System.out.print("> ");
+
+        }
+        System.out.println("]");
+    }
+
+    public void printDistanceStepGreedy(LinkedList<LinkedList<Node>> qoq){
+        //print out expanded node (this is the first value in first list)
+        System.out.print("   " + qoq.peekFirst().peekFirst().val + "         ");
+
+        //Print out queues
+        System.out.print("[");
+        for( LinkedList<Node> p : qoq){
+
+            //get this paths distance and print it first
+            System.out.print(p.peekFirst().h);
+
+            System.out.print("<");
+            for(Node n : (LinkedList<Node>)p){
                 System.out.print(n.val);
             }
             System.out.print("> ");

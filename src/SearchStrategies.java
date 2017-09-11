@@ -57,6 +57,13 @@ public class SearchStrategies {
         method.searchMethod(g);
 
 
+        //if( method.searchMethod(g).isEmpty()){
+            //failed
+        //}
+        //else{
+            //found a path to goal
+
+        //}
        //return new Queue();
 
         ///***** DONT SUBMIT without checking General_Search instructions on asignment*****
@@ -142,9 +149,9 @@ public class SearchStrategies {
             System.out.println("exception caught in as: " + e.getMessage());
         }
 
-        // Hill Climbing Search
+        // Hill Climbing without BT Search
         try{
-            HillClimbing hc = new HillClimbing();
+            HillClimbingWithoutBT hc = new HillClimbingWithoutBT();
             s.General_Search(s.graph, hc);
         }
         catch(Exception e){
@@ -158,6 +165,15 @@ public class SearchStrategies {
         }
         catch(Exception e){
             System.out.println("exception caught in as: " + e.getMessage());
+        }
+
+          // Hill Climbing  w bt Search
+        try{
+            HillClimbing hc2 = new HillClimbing();
+            s.General_Search(s.graph, hc2);
+        }
+        catch(Exception e){
+            System.out.println("exception caught in hc: " + e.getMessage());
         }
 
     }

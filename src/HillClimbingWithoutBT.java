@@ -3,11 +3,11 @@ import java.util.*;
 /**
  * Created by andrewrot on 9/10/2017.
  */
-public class HillClimbing implements ISearchMethod {
+public class HillClimbingWithoutBT implements ISearchMethod {
 
     @Override
     public void printMethodName() {
-        System.out.println("Hill Climbing (with backtracking)");
+        System.out.println("Hill Climbing (without backtracking)");
         System.out.println();
         System.out.println("Expanded     Queue");
     }
@@ -25,12 +25,14 @@ public class HillClimbing implements ISearchMethod {
 
         outerloop:
         while (!queueOfQueues.isEmpty()) {
+
+
+
             printStep(queueOfQueues);
             LinkedList<Node> currList = queueOfQueues.poll();
             Node curr = currList.peek();
             PriorityQueue<Node> frontier = g.adjList.get(curr);
             if(currList.peekFirst().val == 'G' && currList.peekLast().val == 'S'){
-                pathToFinish = currList;
                 break outerloop;
             }
             Iterator<Node> i = frontier.iterator();
@@ -48,16 +50,24 @@ public class HillClimbing implements ISearchMethod {
                     }
                     toAdd.addFirst(n);
 
-                    childrenQueues = insertByHeuristic(childrenQueues, toAdd);
+                    queueOfQueues = insertByHeuristic(queueOfQueues, toAdd);
                 }
             }
 
+            LinkedList<Node> bestChild = queueOfQueues.pollFirst();
 
-            //Children are sorted in order - however, they need to be added to front in reverse order
-            Iterator childrenIterator = childrenQueues.descendingIterator();
-            while (childrenIterator.hasNext()) {
-                queueOfQueues.addFirst((LinkedList<Node>)childrenIterator.next());
+            if(curr.h > bestChild.peekFirst().h){
+                //continue, update queue of queues
+                queueOfQueues.clear();
+                queueOfQueues.addFirst(bestChild);
+            } else {
+                //otherwise, we've found the local max
+                pathToFinish = bestChild;
+                queueOfQueues.clear();
             }
+
+
+            
 
             
         }
@@ -158,9 +168,7 @@ public class HillClimbing implements ISearchMethod {
         //Print out queues
         System.out.print("[");
         for (LinkedList<Node> q : qoq) {
-
             System.out.print(q.peekFirst().h);
-
             System.out.print("<");
             for (Node n : (LinkedList<Node>) q) {
                 System.out.print(n.val);
@@ -189,8 +197,7 @@ public class HillClimbing implements ISearchMethod {
         for( Path p : qoq){
 
             //get this paths distance and print it first
-            //System.out.print(p.getTotalDistance());
-            System.out.print(p.getPathSoFar().peekFirst().h);
+            System.out.print(p.getTotalDistance());
 
             System.out.print("<");
             for(Node n : (LinkedList<Node>)p.getPathSoFar()){

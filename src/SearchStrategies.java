@@ -151,5 +151,14 @@ public class SearchStrategies {
             System.out.println("exception caught in hc: " + e.getMessage());
         }
 
+        // Beam Search
+        try{
+            BeamSearch bs = new BeamSearch(2);
+            s.General_Search(s.graph, bs);
+        }
+        catch(Exception e){
+            System.out.println("exception caught in as: " + e.getMessage());
+        }
+
     }
 }

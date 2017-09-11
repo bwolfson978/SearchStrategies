@@ -131,5 +131,14 @@ public class SearchStrategies {
             System.out.println("exception caught in gs: " + e.getMessage());
         }
 
+        // A* Search
+        try{
+            AStarSearch as = new AStarSearch();
+            s.General_Search(s.graph, as);
+        }
+        catch(Exception e){
+            System.out.println("exception caught in as: " + e.getMessage());
+        }
+
     }
 }

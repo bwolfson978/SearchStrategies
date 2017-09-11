@@ -30,8 +30,6 @@ public class UniformSearch implements ISearchMethod{
         LinkedList<Node> pathToFinish = new LinkedList<Node>(); //may have to switch the queue
         //pathToFinish.add(start);
 
-
-
         //put the adjacent nodes into out queue
         Queue<Node> queue = new LinkedList<Node>(g.adjList.get(start));
 
@@ -53,7 +51,19 @@ public class UniformSearch implements ISearchMethod{
 
             newQueue.add(n);
             newQueue.add(start); 
-            Path nextPath = new Path(newQueue);
+
+            float dt = 0;
+            //GRAB DISTANCE FOR THESE TOO MOFOS
+             Iterator<Node> x = g.adjList.get(n).iterator();
+            while (x.hasNext()) {
+               Node neighborNode = x.next();
+               //find the node pointing back to the start to get directed distance
+                if(neighborNode.val == start.val){ 
+                    dt = neighborNode.d;
+                }
+            }
+
+            Path nextPath = new Path(newQueue, dt);
             queueOfQueues.add(nextPath);
         }
 
@@ -63,27 +73,60 @@ public class UniformSearch implements ISearchMethod{
         
         outerloop: while(queue.peek() != null) {
             Node nextNode = queue.poll(); //dequeue the head and hold it here (poll = dequeue)
-         
+            //System.out.println("Expanded node: "+ nextNode.val);
+
             Iterator<Node> i = g.adjList.get(nextNode).iterator(); //get nextNode's neighbors
             
+
+            //store the front of the queue. New nodes will add to this previous head.
+            Path tempFront = new Path(queueOfQueues.peekFirst().getPathSoFar(), queueOfQueues.peekFirst().getTotalDistance());
+
+            float distanceTraveled = tempFront.getTotalDistance();//might end up needing
+            //System.out.println("Distance traveled for this path: "+ distanceTraveled);
+
             while (i.hasNext()) {
                 Node n = i.next();
 
+                //System.out.println("neighbor.val: "+ n.val);
                 //********* Print related code ********
-                //for each of it's neighbors, append it to the front of the first list of lists, and then re-add it to the end
-                Path frontList = new Path(queueOfQueues.peekFirst().pathSoFar);
+               
+                //Create new/copied objects from old ones
+                LinkedList<Node> tempList = new LinkedList<Node>(tempFront.getPathSoFar());
+                
+
+                Path frontList = new Path(tempList);
                 
                 //check to see if the solution has reached the first of list, if so, were good.
                 if(frontList.pathSoFar.peekFirst().val == 'G' && frontList.pathSoFar.peekLast().val == 'S')
                     break outerloop; //goal reached!
                 
+
                 //Always add unless letter exists in the front queue
                 if(!frontList.pathSoFar.contains(n)){
+                    //System.out.println("node that matters: "+ n.val);
                     frontList.pathSoFar.addFirst(n); //add new neighbor to front of this list
+
+                    //update this paths distance
+
+                    //Since we are using a priority queue we have to iterate to find the 
+                    //distance to adjacent node X in the queue grrrrr
+                    Iterator<Node> x = g.adjList.get(n).iterator();
+                    while (x.hasNext()) {
+
+                        Node neighborNode = x.next();
+                        //System.out.println("adj: "+neighborNode.val);
+                        if(nextNode.val == neighborNode.val){
+                            //System.out.println("value added!");
+                            frontList.totalDistance = neighborNode.d + distanceTraveled;
+                        }
+                    }
+
                     //re-add this to end of queue of queues
                     queueOfQueues.add(frontList);
-                    pathToFinish.add(n);
+                    //pathToFinish.add(n);
                     queue.add(n);
+                }else{
+                    //System.out.println("neighbor doesnt matter: "+n.val);
                 }
                 //*************************************
 

@@ -68,10 +68,11 @@ public class UniformSearch implements ISearchMethod{
         //print out current step
         printDistanceStep(queueOfQueues);
 
-        outerloop: while(queue.peek() != null) {
-            Node nextNode = queue.poll(); //dequeue the head and hold it here (poll = dequeue)
-            //System.out.println("Expanded node: "+ nextNode.val);
+        outerloop: while(queueOfQueues.peekFirst().getPathSoFar().peekFirst() != null) {
 
+            Node nextNode = queueOfQueues.peekFirst().getPathSoFar().peekFirst();//hold head it here 
+            //queue.poll(); //dequeue the head and hold it here (poll = dequeue)
+            
             Iterator<Node> i = g.adjList.get(nextNode).iterator(); //get nextNode's neighbors
             
             //store the front of the queue. New nodes will add to this previous head.
@@ -84,9 +85,8 @@ public class UniformSearch implements ISearchMethod{
 
             while (i.hasNext()) {
                 Node n = i.next();
-               
+
                 //Create new/copied objects from old ones
-                //LinkedList<Node> tempList = new LinkedList<Node>(tempFront.getPathSoFar());
                 Path frontList = new Path(new LinkedList<Node>(tempFront.getPathSoFar()), tempFront.getTotalDistance());
                 
                 //check to see if the solution has reached the first of list, if so, were good.
@@ -95,7 +95,6 @@ public class UniformSearch implements ISearchMethod{
                 
                 //Always add unless letter exists in the front queue
                 if(!frontList.pathSoFar.contains(n)){
-                    //System.out.println("node that matters: "+ n.val);
                     frontList.pathSoFar.addFirst(n); //add new neighbor to front of this list
 
                     //update this paths distance
@@ -110,9 +109,6 @@ public class UniformSearch implements ISearchMethod{
                     //re-add this to end of queue of queues
                     //queueOfQueues.add(frontList);// ---old unsorted way
                     queueOfQueues = insertByDistanceTraveled(queueOfQueues, frontList);
-                    queue.addFirst(queueOfQueues.peekFirst().getPathSoFar().peekFirst());
-                    //old working below
-                    //queue.add(n);
                 }
             }
             //now we are done with the front list
@@ -123,7 +119,7 @@ public class UniformSearch implements ISearchMethod{
         System.out.println("goal reached!");
 
         //Final path from start to finish
-        printPathToFinish(queueOfQueues.peekFirst().pathSoFar); //Not required, but i like it
+        //printPathToFinish(queueOfQueues.peekFirst().pathSoFar); //Not required, but i like it
 
         return pathToFinish;
     }
@@ -132,29 +128,18 @@ public class UniformSearch implements ISearchMethod{
 
     private LinkedList<Path> insertByDistanceTraveled(LinkedList<Path> qofqs, Path toAdd){
         boolean added = false;
-
-        //System.out.println("qoq size: "+qofqs.size());
         if(qofqs.size() == 0){
             qofqs.add(toAdd);
         }
-
-        
-
         else {
             float valToInsert = toAdd.getTotalDistance();
             Iterator<Path> i = qofqs.listIterator();
             int idx = 0;
-            //System.out.println("Path to add: "+toAdd.getPathSoFar().peekFirst() + " dist: "+valToInsert);
             while (i.hasNext()) {
 
-                //LinkedList<Node> currList = i.next();
                 Path currPath = i.next();
-                //System.out.println("currPath: " +currPath.getPathSoFar());
-
-                //if current path length is > than one to insert
-                //System.out.println("currPath.getTotalDistance(): "+currPath.getTotalDistance() + " valToInsert: "+valToInsert);
+               
                 if (currPath.getTotalDistance() > valToInsert) {
-                    //System.out.println("value was smaller");
                     if (idx == 0) {
                         qofqs.addFirst(toAdd);
                         added = true;
@@ -165,7 +150,6 @@ public class UniformSearch implements ISearchMethod{
                         break;
                     }
                 } else if (currPath.getTotalDistance() == valToInsert) {
-                    //System.out.println("value was the same");
                     char currListVal = currPath.getPathSoFar().peekFirst().val;
 
                     char toAddVal = toAdd.getPathSoFar().peekFirst().val;
@@ -237,11 +221,9 @@ public class UniformSearch implements ISearchMethod{
                     }
 
                 }
-                //System.out.println("value was larger");
                 idx++;
             }
         }
-        //System.out.println();
 
         //got to the end without being added, add to the end
         if(added == false){

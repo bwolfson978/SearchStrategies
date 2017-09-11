@@ -61,7 +61,7 @@ public class BreadthFirstSearch implements ISearchMethod{
             
             while (i.hasNext()) {
                 Node n = i.next();
-                
+
                 //********* Print related code ********
                 //for each of it's neighbors, append it to the front of the first list of lists, and then re-add it to the end
                 LinkedList<Node> frontList = new LinkedList<Node>(queueOfQueues.peekFirst());
@@ -96,7 +96,7 @@ public class BreadthFirstSearch implements ISearchMethod{
         System.out.println("goal reached!");
 
         //Final path from start to finish
-        printPathToFinish(queueOfQueues.peekFirst()); //Not required, but i like it
+        //printPathToFinish(queueOfQueues.peekFirst()); //Not required, but i like it
 
         //Not finished implementing
         return pathToFinish;

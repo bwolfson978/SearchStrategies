@@ -122,7 +122,14 @@ public class SearchStrategies {
             System.out.println("exception caught in us:" + exc.getMessage());
         }
 
-
+        // greedy search
+        try {
+            GreedySearch gs = new GreedySearch();
+            s.General_Search(s.graph, gs);
+        }
+        catch(Exception e){
+            System.out.println("exception caught in gs: " + e.getMessage());
+        }
 
     }
 }

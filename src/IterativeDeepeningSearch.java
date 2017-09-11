@@ -15,7 +15,7 @@ public class IterativeDeepeningSearch implements ISearchMethod {
         System.out.println("Iterative Deepening Search");
     }
 
-    public Queue<Node> searchMethod(Graph g) {
+    public LinkedList<Node> searchMethod(Graph g) {
         LinkedList<Node> pathToFinish = new LinkedList<Node>();
 
         int depth = 0;
@@ -40,6 +40,7 @@ public class IterativeDeepeningSearch implements ISearchMethod {
                 printStep(queueOfQueues);
                 LinkedList<Node> currList = queueOfQueues.poll();
                 Node curr = currList.peek();
+                pathToFinish = currList;//mayb
                 PriorityQueue<Node> frontier = g.adjList.get(curr);
                 if (currList.peekFirst().val == 'G' && currList.peekLast().val == 'S') {
                     break outerloop;
@@ -67,6 +68,7 @@ public class IterativeDeepeningSearch implements ISearchMethod {
             }
             depth++;
         }
+        // System.out.println("goal reached!");
         return pathToFinish;
     }
 

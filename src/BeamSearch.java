@@ -16,7 +16,7 @@ public class BeamSearch implements ISearchMethod {
         System.out.println("Beam Search");
     }
 
-    public Queue<Node> searchMethod(Graph g){
+    public LinkedList<Node> searchMethod(Graph g){
         Node start = g.src;
         LinkedList<Node> pathToFinish = new LinkedList<Node>();
         pathToFinish.add(start);
@@ -31,12 +31,15 @@ public class BeamSearch implements ISearchMethod {
 
         outerloop:
         while (!queueOfQueues.isEmpty()) {
+            pathToFinish.clear();
             printDistanceStep(queueOfQueues);
             boolean overLimit = queueOfQueues.size() > w ? true : false;
             LinkedList<Node> currList = queueOfQueues.poll().getPathSoFar();
+
             Node curr = currList.peek();
             PriorityQueue<Node> frontier = g.adjList.get(curr);
             if(currList.peekFirst().val == 'G' && currList.peekLast().val == 'S'){
+                pathToFinish = currList;
                 break outerloop;
             }
             Iterator<Node> i = frontier.iterator();
@@ -66,7 +69,7 @@ public class BeamSearch implements ISearchMethod {
                 }
             }
         }
-
+        //System.out.println("goal reached!");
         return pathToFinish;
     }
 

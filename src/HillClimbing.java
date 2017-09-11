@@ -13,7 +13,7 @@ public class HillClimbing implements ISearchMethod {
     }
 
 
-    public Queue<Node> searchMethod(Graph g){
+    public LinkedList<Node> searchMethod(Graph g){
         Node start = g.src;
         LinkedList<Node> pathToFinish = new LinkedList<Node>();
         pathToFinish.add(start);
@@ -27,6 +27,7 @@ public class HillClimbing implements ISearchMethod {
         while (!queueOfQueues.isEmpty()) {
             printStep(queueOfQueues);
             LinkedList<Node> currList = queueOfQueues.poll();
+            pathToFinish = currList;//may
             Node curr = currList.peek();
             PriorityQueue<Node> frontier = g.adjList.get(curr);
             if(currList.peekFirst().val == 'G' && currList.peekLast().val == 'S'){
@@ -61,7 +62,7 @@ public class HillClimbing implements ISearchMethod {
 
             
         }
-
+         //System.out.println("goal reached!");
         return pathToFinish;
     }
 

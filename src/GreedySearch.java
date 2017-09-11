@@ -13,7 +13,7 @@ public class GreedySearch implements ISearchMethod {
     }
 
 
-    public Queue<Node> searchMethod(Graph g){
+    public LinkedList<Node> searchMethod(Graph g){
         Node start = g.src;
         LinkedList<Node> pathToFinish = new LinkedList<Node>();
         pathToFinish.add(start);
@@ -29,6 +29,7 @@ public class GreedySearch implements ISearchMethod {
         while (!queueOfQueues.isEmpty()) {
             printDistanceStepGreedy(queueOfQueues);
             LinkedList<Node> currList = queueOfQueues.poll();
+            pathToFinish = currList; //may
             Node curr = currList.peek();
             PriorityQueue<Node> frontier = g.adjList.get(curr);
             if(currList.peekFirst().val == 'G' && currList.peekLast().val == 'S'){
@@ -48,7 +49,7 @@ public class GreedySearch implements ISearchMethod {
                 }
             }
         }
-
+ //System.out.println("goal reached!");
         return pathToFinish;
     }
 

@@ -16,7 +16,7 @@ public class DepthLimitedSearch implements ISearchMethod {
         System.out.println("Depth Limited Search");
     }
 
-    public Queue<Node> searchMethod(Graph g) {
+    public LinkedList<Node> searchMethod(Graph g) {
         Node start = g.src;
         visitedList.add(start);
 
@@ -34,11 +34,13 @@ public class DepthLimitedSearch implements ISearchMethod {
 
         outerloop:
         while (!queueOfQueues.isEmpty()) {
+            pathToFinish.clear();
             printStep(queueOfQueues);
             LinkedList<Node> currList = queueOfQueues.poll();
             Node curr = currList.peek();
             PriorityQueue<Node> frontier = g.adjList.get(curr);
             if(currList.peekFirst().val == 'G' && currList.peekLast().val == 'S'){
+                pathToFinish = currList;
                 break outerloop;
             }
             Iterator<Node> i = frontier.iterator();

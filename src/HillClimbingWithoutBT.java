@@ -13,7 +13,7 @@ public class HillClimbingWithoutBT implements ISearchMethod {
     }
 
 
-    public Queue<Node> searchMethod(Graph g){
+    public LinkedList<Node> searchMethod(Graph g){
         Node start = g.src;
         LinkedList<Node> pathToFinish = new LinkedList<Node>();
         pathToFinish.add(start);
@@ -30,6 +30,7 @@ public class HillClimbingWithoutBT implements ISearchMethod {
 
             printStep(queueOfQueues);
             LinkedList<Node> currList = queueOfQueues.poll();
+            pathToFinish = currList; //m
             Node curr = currList.peek();
             PriorityQueue<Node> frontier = g.adjList.get(curr);
             if(currList.peekFirst().val == 'G' && currList.peekLast().val == 'S'){
@@ -62,6 +63,7 @@ public class HillClimbingWithoutBT implements ISearchMethod {
                 queueOfQueues.addFirst(bestChild);
             } else {
                 //otherwise, we've found the local max
+                // System.out.println("goal reached!");
                 pathToFinish = bestChild;
                 queueOfQueues.clear();
             }
@@ -71,7 +73,7 @@ public class HillClimbingWithoutBT implements ISearchMethod {
 
             
         }
-
+        //System.out.println("goal reached!");
         return pathToFinish;
     }
 

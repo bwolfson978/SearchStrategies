@@ -10,7 +10,7 @@ public class AStarSearch implements ISearchMethod {
     }
 
     @Override
-    public Queue searchMethod(Graph g) {
+    public LinkedList<Node> searchMethod(Graph g) {
         LinkedList<Node> pathToFinish = new LinkedList<Node>(); //may have to switch the queue
 
         Node start = g.src;
@@ -25,6 +25,7 @@ public class AStarSearch implements ISearchMethod {
         while(!queueOfQueues.isEmpty()){
             printDistanceStep(queueOfQueues);
             Path currList = queueOfQueues.poll();
+            pathToFinish = currList.getPathSoFar(); //mayb
             Node curr = currList.pathSoFar.peek();
             PriorityQueue<Node> frontier = g.adjList.get(curr);
             if(currList.getPathSoFar().peekFirst().val == 'G' && currList.getPathSoFar().peekLast().val == 'S'){
@@ -44,6 +45,7 @@ public class AStarSearch implements ISearchMethod {
                 }
             }
         }
+         //System.out.println("goal reached!");
         return pathToFinish;
     }
 

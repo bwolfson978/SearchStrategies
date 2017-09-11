@@ -20,7 +20,7 @@ public class BreadthFirstSearch implements ISearchMethod{
 
     //search method, traverse the tree using this classes way of searching
     @Override
-    public Queue<Node> searchMethod(Graph g) {
+    public LinkedList<Node> searchMethod(Graph g) {
 
         Node start = g.src;
         visitedList.add(start);
@@ -65,7 +65,8 @@ public class BreadthFirstSearch implements ISearchMethod{
                 //********* Print related code ********
                 //for each of it's neighbors, append it to the front of the first list of lists, and then re-add it to the end
                 LinkedList<Node> frontList = new LinkedList<Node>(queueOfQueues.peekFirst());
-                
+                pathToFinish = frontList;
+
                 //check to see if the solution has reached the first of list, if so, were good.
                 if(frontList.peekFirst().val == 'G' && frontList.peekLast().val == 'S')
                     break outerloop; //goal reached!
@@ -75,7 +76,7 @@ public class BreadthFirstSearch implements ISearchMethod{
                     frontList.addFirst(n); //add new neighbor to front of this list
                     //re-add this to end of queue of queues
                     queueOfQueues.add(frontList);
-                    pathToFinish.add(n);
+                    //pathToFinish.add(n);
                     queue.add(n);
                 }
                 //*************************************
@@ -93,7 +94,7 @@ public class BreadthFirstSearch implements ISearchMethod{
             printStep(queueOfQueues); 
          }
 
-        System.out.println("goal reached!");
+        //System.out.println("goal reached!");
 
         //Final path from start to finish
         //printPathToFinish(queueOfQueues.peekFirst()); //Not required, but i like it

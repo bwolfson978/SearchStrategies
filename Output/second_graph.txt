@@ -1,0 +1,177 @@
+O Z 71
+O A 151
+Z S 75
+S A 140
+S T 118
+A F 99
+A R 80
+T L 111
+L M 70
+M D 75
+D C 120
+R C 146
+R P 97
+C P 138
+F G 211
+P G 101
+G B 90
+G U 85
+U H 98
+U V 142
+H E 86
+V I 92
+I N 87
+#####
+A 253
+B 77
+C 160
+D 242
+E 161
+F 178
+H 151
+I 226
+L 244
+M 241
+N 234
+O 380
+P 98
+R 193
+S 366
+T 329
+U 80
+V 199
+Z 374
+Depth 1st search
+   S         [<S>]
+   A         [<AS><ZS><TS>]
+   F         [<FAS><RAS><OAS><ZS><TS>]
+   G         [<GFAS><RAS><OAS><ZS><TS>]
+Goal reached!
+Final Path: <G F A S >
+
+Breadth 1st search
+
+Expanded     Queue
+   S         [<S>]
+   A         [<AS><ZS><TS>]
+   Z         [<ZS><TS><FAS><RAS><OAS>]
+   T         [<TS><FAS><RAS><OAS><OZS>]
+   F         [<FAS><RAS><OAS><OZS><LTS>]
+   R         [<RAS><OAS><OZS><LTS><GFAS>]
+   O         [<OAS><OZS><LTS><GFAS><CRAS><PRAS>]
+   O         [<OZS><LTS><GFAS><CRAS><PRAS><ZOAS>]
+   L         [<LTS><GFAS><CRAS><PRAS><ZOAS><AOZS>]
+   G         [<GFAS><CRAS><PRAS><ZOAS><AOZS><MLTS>]
+Goal reached!
+Final Path: <G F A S >
+
+Depth Limited Search
+   S         [<S>]
+   A         [<AS><ZS><TS>]
+   F         [<FAS><RAS><OAS><ZS><TS>]
+   R         [<RAS><OAS><ZS><TS>]
+   O         [<OAS><ZS><TS>]
+   Z         [<ZS><TS>]
+   O         [<OZS><TS>]
+   T         [<TS>]
+   L         [<LTS>]
+failed
+Iterative Deepening Search
+Depth: 0
+   S         [<S>]
+Depth: 1
+   S         [<S>]
+   A         [<AS><ZS><TS>]
+   Z         [<ZS><TS>]
+   T         [<TS>]
+Depth: 2
+   S         [<S>]
+   A         [<AS><ZS><TS>]
+   F         [<FAS><RAS><OAS><ZS><TS>]
+   R         [<RAS><OAS><ZS><TS>]
+   O         [<OAS><ZS><TS>]
+   Z         [<ZS><TS>]
+   O         [<OZS><TS>]
+   T         [<TS>]
+   L         [<LTS>]
+Depth: 3
+   S         [<S>]
+   A         [<AS><ZS><TS>]
+   F         [<FAS><RAS><OAS><ZS><TS>]
+   G         [<GFAS><RAS><OAS><ZS><TS>]
+Goal reached!
+Final Path: <G F A S >
+
+Uniform Search
+
+Expanded     Queue
+   S         [0.0<S> ]
+   A         [140.0<AS> 75.0<ZS> 118.0<TS> ]
+   Z         [75.0<ZS> 118.0<TS> 220.0<RAS> 239.0<FAS> 291.0<OAS> ]
+   T         [118.0<TS> 146.0<OZS> 220.0<RAS> 239.0<FAS> 291.0<OAS> ]
+   O         [146.0<OZS> 220.0<RAS> 229.0<LTS> 239.0<FAS> 291.0<OAS> ]
+   R         [220.0<RAS> 229.0<LTS> 239.0<FAS> 291.0<OAS> 297.0<AOZS> ]
+   L         [229.0<LTS> 239.0<FAS> 291.0<OAS> 297.0<AOZS> 317.0<PRAS> 366.0<CRAS> ]
+   F         [239.0<FAS> 291.0<OAS> 297.0<AOZS> 299.0<MLTS> 317.0<PRAS> 366.0<CRAS> ]
+   O         [291.0<OAS> 297.0<AOZS> 299.0<MLTS> 317.0<PRAS> 366.0<CRAS> 450.0<GFAS> ]
+   A         [297.0<AOZS> 299.0<MLTS> 317.0<PRAS> 362.0<ZOAS> 366.0<CRAS> 450.0<GFAS> ]
+   M         [299.0<MLTS> 317.0<PRAS> 362.0<ZOAS> 366.0<CRAS> 377.0<RAOZS> 396.0<FAOZS> 450.0<GFAS> ]
+   P         [317.0<PRAS> 362.0<ZOAS> 366.0<CRAS> 374.0<DMLTS> 377.0<RAOZS> 396.0<FAOZS> 450.0<GFAS> ]
+   Z         [362.0<ZOAS> 366.0<CRAS> 374.0<DMLTS> 377.0<RAOZS> 396.0<FAOZS> 418.0<GPRAS> 450.0<GFAS> 455.0<CPRAS> ]
+   C         [366.0<CRAS> 374.0<DMLTS> 377.0<RAOZS> 396.0<FAOZS> 418.0<GPRAS> 450.0<GFAS> 455.0<CPRAS> ]
+   D         [374.0<DMLTS> 377.0<RAOZS> 396.0<FAOZS> 418.0<GPRAS> 450.0<GFAS> 455.0<CPRAS> 486.0<DCRAS> 504.0<PCRAS> ]
+   R         [377.0<RAOZS> 396.0<FAOZS> 418.0<GPRAS> 450.0<GFAS> 455.0<CPRAS> 486.0<DCRAS> 494.0<CDMLTS> 504.0<PCRAS> ]
+   F         [396.0<FAOZS> 418.0<GPRAS> 450.0<GFAS> 455.0<CPRAS> 474.0<PRAOZS> 486.0<DCRAS> 494.0<CDMLTS> 504.0<PCRAS> 523.0<CRAOZS> ]
+   G         [418.0<GPRAS> 450.0<GFAS> 455.0<CPRAS> 474.0<PRAOZS> 486.0<DCRAS> 494.0<CDMLTS> 504.0<PCRAS> 523.0<CRAOZS> 607.0<GFAOZS> ]
+Goal reached!
+Final Path: <G P R A S >
+
+Greedy Search
+
+Expanded     Queue
+   S         [366.0<S> ]
+   A         [253.0<AS> ]
+   F         [178.0<FAS> ]
+   G         [0.0<GFAS> ]
+Goal reached!
+Final Path: <G F A S >
+
+A* Search: 
+   S         [366.0<S> ]
+   A         [393.0<AS> 447.0<TS> 449.0<ZS> ]
+   R         [413.0<RAS> 417.0<FAS> 447.0<TS> 449.0<ZS> 671.0<OAS> ]
+   P         [415.0<PRAS> 417.0<FAS> 447.0<TS> 449.0<ZS> 526.0<CRAS> 671.0<OAS> ]
+   F         [417.0<FAS> 418.0<GPRAS> 447.0<TS> 449.0<ZS> 526.0<CRAS> 671.0<OAS> ]
+   G         [418.0<GPRAS> 447.0<TS> 449.0<ZS> 526.0<CRAS> 671.0<OAS> ]
+Goal reached!
+Final Path: <G P R A S >
+
+Hill Climbing (without backtracking)
+
+Expanded     Queue
+   S         [366.0<S>]
+   A         [253.0<AS>]
+   F         [178.0<FAS>]
+   G         [0.0<GFAS>]
+Goal reached!
+Final Path: <G F A S >
+
+Beam Search
+   S         [366.0<S> ]
+   A         [253.0<AS> 374.0<ZS> 329.0<TS> ]
+   Z         [374.0<ZS> 178.0<FAS> ]
+   F         [178.0<FAS> 380.0<OZS> ]
+   O         [380.0<OZS> 0.0<GFAS> ]
+   G         [0.0<GFAS> 253.0<AOZS> ]
+Goal reached!
+Final Path: <G F A S >
+
+Hill Climbing (with backtracking)
+
+Expanded     Queue
+   S         [366.0<S>]
+   A         [253.0<AS>]
+   F         [178.0<FAS>]
+   G         [0.0<GFAS>]
+Goal reached!
+Final Path: <G F A S >

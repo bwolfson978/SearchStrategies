@@ -22,7 +22,7 @@ public class DepthFirstSearch implements ISearchMethod{
 
     //search method, traverse the tree using this classes way of searching
     @Override
-    public Queue<Node> searchMethod(Graph g) {
+    public LinkedList<Node> searchMethod(Graph g) {
         Node start = g.src;
         visitedList.add(start);
 
@@ -97,7 +97,7 @@ public class DepthFirstSearch implements ISearchMethod{
             printStep(queueOfQueues);             
          }
 
-        System.out.println("goal reached!");
+        //System.out.println("goal reached!");
 
         //Final path from start to finish
         //printPathToFinish(pathToFinish); //Not required, but i like it

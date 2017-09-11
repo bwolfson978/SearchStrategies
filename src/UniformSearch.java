@@ -22,7 +22,7 @@ public class UniformSearch implements ISearchMethod{
 
     //search method, traverse the tree using this classes way of searching
     @Override
-    public Queue<Node> searchMethod(Graph g) {
+    public LinkedList<Node> searchMethod(Graph g) {
 
         Node start = g.src;
 
@@ -78,6 +78,8 @@ public class UniformSearch implements ISearchMethod{
             //store the front of the queue. New nodes will add to this previous head.
             Path tempFront = new Path(queueOfQueues.peekFirst().getPathSoFar(), queueOfQueues.peekFirst().getTotalDistance());
 
+            pathToFinish = queueOfQueues.peekFirst().getPathSoFar();
+            
             //burn the first value
             queueOfQueues.removeFirst();
 
@@ -116,8 +118,9 @@ public class UniformSearch implements ISearchMethod{
             printDistanceStep(queueOfQueues); 
          }
 
-        System.out.println("goal reached!");
+        //System.out.println("goal reached!");
 
+        //pathToFinish = queueOfQueues.peekFirst().pathSoFar;
         //Final path from start to finish
         //printPathToFinish(queueOfQueues.peekFirst().pathSoFar); //Not required, but i like it
 

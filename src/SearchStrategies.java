@@ -54,23 +54,34 @@ public class SearchStrategies {
         method.printMethodName();
 
         //call the search method
-        method.searchMethod(g);
+        LinkedList<Node> p = method.searchMethod(g);
 
 
-        //if( method.searchMethod(g).isEmpty()){
+        if( p.isEmpty()){
             //failed
-        //}
-        //else{
+            System.out.println("failed");
+        }
+        else{
             //found a path to goal
+            printPathToFinish(p);
 
-        //}
+        }
        //return new Queue();
 
-        ///***** DONT SUBMIT without checking General_Search instructions on asignment*****
+    }
+
+
+     private void printPathToFinish(LinkedList<Node> q) {
+        System.out.println("Goal reached!");
+        System.out.print("Final Path: <");
+        for(Node n : q)
+            System.out.print(n.val + " ");
+        System.out.println(">");
+        System.out.println();
     }
 
     public static void main(String[] args){
-        System.out.println("hello");
+        //System.out.println("hello");
         SearchStrategies s = new SearchStrategies();
         // read file into adjacency list representation
         File dir = new File(".");

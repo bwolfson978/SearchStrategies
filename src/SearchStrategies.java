@@ -58,6 +58,8 @@ public class SearchStrategies {
 
 
        //return new Queue();
+
+        ///***** DONT SUBMIT without checking General_Search instructions on asignment*****
     }
 
     public static void main(String[] args){
@@ -118,8 +120,8 @@ public class SearchStrategies {
             UniformSearch us = new UniformSearch();
             s.General_Search(s.graph, us);
         }
-        catch(Exception exc){
-            System.out.println("exception caught in us:" + exc.getMessage());
+        catch(Exception e){
+            System.out.println("exception caught in us:" + e.getMessage());
         }
 
         // greedy search
@@ -138,6 +140,15 @@ public class SearchStrategies {
         }
         catch(Exception e){
             System.out.println("exception caught in as: " + e.getMessage());
+        }
+
+        // Hill Climbing Search
+        try{
+            HillClimbing hc = new HillClimbing();
+            s.General_Search(s.graph, hc);
+        }
+        catch(Exception e){
+            System.out.println("exception caught in hc: " + e.getMessage());
         }
 
     }
